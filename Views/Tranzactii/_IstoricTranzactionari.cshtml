@@ -1,0 +1,107 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<CRYPTO_Burcea.DAL.Tranzactionare>
+
+<script src="~/Scripts/jquery-3.4.1.min.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
+
+<div class="table-bordered">
+    <h4>&nbsp;Căutare</h4>
+
+    @using (Ajax.BeginForm("IstoricTranzactionari", "Tranzactii", new AjaxOptions()
+    {
+        HttpMethod = "GET",
+        UpdateTargetId = "divTranzactii",
+        InsertionMode = InsertionMode.Replace
+    }))
+    {
+        <span>&nbsp;Data: </span>@Html.TextBox("searchData", null, new { @class = "form-control datepicker" })
+        <span>&nbsp;Portofel: </span>@Html.TextBox("searchPortofel", null, new { @class = "form-control" })
+        <input type="submit" class="btn btn-primary" value="Caută" />
+    }
+    <br />
+</div>
+
+<link href="~/Content/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+
+
+<script>
+    $('.datepicker').datepicker({
+        format: 'yyyy-mm-dd'
+    });
+</script>
+
+
+<br />
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().DataTranzactionare)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().SumaVanduta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().SumaCumparata)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().ComisionEuro)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Moneda.DenumireMoneda)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().ContinutPortofel.Portofel.DenumirePortofel)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Moneda1.DenumireMoneda)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().ContinutPortofel1.Portofel.DenumirePortofel)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataTranzactionare)
+            </td>
+            <td style="color:red">
+                @Html.DisplayFor(modelItem => item.SumaVanduta)
+            </td>
+            <td style="color:green">
+                @Html.DisplayFor(modelItem => item.SumaCumparata)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ComisionEuro)
+            </td>
+            <td style="color:red">
+                @Html.DisplayFor(modelItem => item.Moneda.DenumireMoneda)
+            </td>
+            <td style="color:red">
+                @Html.DisplayFor(modelItem => item.ContinutPortofel.Portofel.DenumirePortofel)
+            </td>
+            <td style="color:green">
+                @Html.DisplayFor(modelItem => item.Moneda1.DenumireMoneda)
+            </td>
+            <td style="color:green">
+                @Html.DisplayFor(modelItem => item.ContinutPortofel1.Portofel.DenumirePortofel)
+            </td>
+        </tr>
+    }
+
+</table>
+
+Pagina @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) din @Model.PageCount
+@Html.PagedListPager(Model, pagina => Url.Action("IstoricTranzactionari", "Tranzactii", new { pagina, searchData = Request.QueryString["searchData"], searchPortofel = Request.QueryString["searchPortofel"] }),
+    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
+    {
+        HttpMethod = "GET",
+        UpdateTargetId = "divTranzactii",
+        InsertionMode = InsertionMode.Replace
+    }))

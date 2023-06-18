@@ -1,0 +1,103 @@
+﻿@model IEnumerable<CRYPTO_Burcea.DAL.Utilizator>
+@using Microsoft.AspNet.Identity
+@using CRYPTO_Burcea.BLL
+
+@{
+    BLLUtilizator oBLL = new BLLUtilizator();
+    if (oBLL.EsteAdmin(User.Identity.GetUserName()))
+    {
+        ViewBag.Title = "Conturi utilizatori";
+    }
+    else
+    {
+        ViewBag.Title = "Contul meu";
+    }
+
+}
+
+@if (oBLL.EsteAdmin(User.Identity.GetUserName()))
+{
+    <h2>Conturi utilizatori</h2>
+}
+else
+{
+    <h2>Contul meu</h2>
+}
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nume)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CalitateAdmin)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Blocat)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DataCreare)
+        </th>
+        @if (oBLL.EsteAdmin(User.Identity.GetUserName()))
+        {
+            <th>
+                @Html.ActionLink("Adaugă utilizator", "Register", "Account", null, new { @class = "btn btn-success" })
+            </th>
+        }
+        else
+        {
+            <th></th>
+        }
+        
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nume)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CalitateAdmin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Blocat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataCreare)
+            </td>
+            <td>
+                @if (oBLL.EsteAdmin(User.Identity.GetUserName()))
+                {
+                    @Html.ActionLink("Editează", "Editeaza", "Utilizator", new { idUtilizator = item.Id }, new { @class = "btn btn-warning" })
+                    if (item.Username == User.Identity.GetUserName())
+                    {
+                        @Html.ActionLink("Schimbă parola", "ChangePassword", "Manage", new { numeuser = item.Username }, new { @class = "btn btn-warning" })
+                    }
+                    using (Html.BeginForm("Sterge", "Utilizator", new { idUtilizator = item.Id }))
+                    {
+                        <input type="submit" class="btn btn-danger" value="Șterge" onclick="return confirm('Sunteți sigur că ștergeți utilizatorul ?');" />
+                    }
+                }
+                else
+                {
+                    @Html.ActionLink("Editează", "Editeaza", "Utilizator", new { idUtilizator = item.Id }, new { @class = "btn btn-warning" })
+                    @Html.ActionLink("Schimbă parola", "ChangePassword", "Manage", new { numeuser = item.Username }, new { @class = "btn btn-warning" })
+                    using (Html.BeginForm("Sterge", "Utilizator", new { idUtilizator = item.Id }))
+                    {
+                        <input type="submit" class="btn btn-danger" value="Șterge" onclick="return confirm('Sunteți sigur că ștergeți utilizatorul ?');" />
+                    }
+
+                }
+            </td>
+        </tr>
+    }
+
+</table>

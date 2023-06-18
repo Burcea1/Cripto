@@ -1,0 +1,95 @@
+﻿@model CRYPTO_Burcea.DAL.Moneda
+@using Microsoft.AspNet.Identity
+@using CRYPTO_Burcea.BLL
+
+@{
+    ViewBag.Title = "Editare moneda";
+    BLLUtilizator oBLL = new BLLUtilizator();
+}
+
+<h2>Editare @ViewBag.Moneda</h2>
+
+@if (oBLL.EsteAdmin(User.Identity.GetUserName()))
+{
+    using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DenumireMoneda, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DenumireMoneda, new { htmlAttributes = new { @class = "form-control", @placeholder = "Denumirea monedei" } })
+                    @Html.ValidationMessageFor(model => model.DenumireMoneda, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DataIntrare, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DataIntrare, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.DataIntrare, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CursIntrare, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CursIntrare, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.CursIntrare, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Referinta, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Referinta, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Referinta, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DiferentaVanzare, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DiferentaVanzare, new { htmlAttributes = new { @class = "form-control", @placeholder = "Diferenta de vanzare (%)" } })
+                    @Html.ValidationMessageFor(model => model.DiferentaVanzare, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DiferentaCumparare, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DiferentaCumparare, new { htmlAttributes = new { @class = "form-control", @placeholder = "Diferenta de cumparare" } })
+                    @Html.ValidationMessageFor(model => model.DiferentaCumparare, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Detalii, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.Detalii, new { htmlAttributes = new { @class = "form-control", @placeholder = "Detalii" } })
+                    @Html.ValidationMessageFor(model => model.Detalii, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Salvează modificările" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    }
+
+}
+
+<div>
+    @Html.ActionLink("Înapoi", "Index", "Moneda", null, new { @class = "btn btn-primary" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

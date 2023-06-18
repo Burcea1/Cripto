@@ -1,0 +1,134 @@
+﻿@model CRYPTO_Burcea.DAL.Moneda
+@using Microsoft.AspNet.Identity
+@using CRYPTO_Burcea.BLL
+
+@{
+    ViewBag.Title = "Detalii";
+    BLLUtilizator oBLL = new BLLUtilizator();
+}
+
+<h2>Detalii @ViewBag.Moneda</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DenumireMoneda)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DenumireMoneda)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DataIntrare)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DataIntrare)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CursIntrare)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CursIntrare)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Referinta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Referinta)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiferentaVanzare)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiferentaVanzare)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DiferentaCumparare)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiferentaCumparare)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Detalii)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Detalii)
+        </dd>
+
+    </dl>
+</div>
+
+
+
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+<div id="chartContainer" style="width:900px;height:400px">
+
+</div>
+<br />
+
+<script type="text/javascript">
+        var result = @Html.Raw(ViewBag.DataPoints);
+        var dataPoints =[];
+        for(var i = 0; i < result.length; i++){
+            dataPoints.push({label:result[i].data, y:result[i].curs});
+        }
+
+    window.onload = function () {
+        var chart = new CanvasJS.Chart("chartContainer", {
+            theme: "light2",
+            zoomEnabled: true,
+            animationEnabled: true,
+            title: {
+                text: "Evolutia cursurilor de schimb"
+            },
+            data: [
+                {
+                    type: "line",
+                    dataPoints: dataPoints,
+                }
+            ]
+        });
+        chart.render();
+    };
+</script>
+
+
+
+
+<p>
+    @if (oBLL.EsteAdmin(User.Identity.GetUserName()))
+    {
+        @Html.ActionLink("Editează", "Editeaza", "Moneda", new { idMoneda = Model.Id }, new { @class = "btn btn-warning" })
+    }
+    @Html.ActionLink("Înapoi", "Index", "Moneda", null, new { @class = "btn btn-primary" })
+</p>
+@if (oBLL.EsteAdmin(User.Identity.GetUserName()))
+{
+    <hr />
+    <div id="divDisponibil">
+        @{
+            Html.RenderAction("IndexDisponibil", "Moneda");
+        }
+    </div>
+}
+
+<hr />
+<div id="divCursuri">
+    @{
+        Html.RenderAction("IndexCurs", "Moneda");
+    }
+</div>

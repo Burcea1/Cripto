@@ -1,0 +1,111 @@
+﻿@model IEnumerable<CRYPTO_Burcea.DAL.Disponibil>
+@using Microsoft.AspNet.Identity
+@using CRYPTO_Burcea.BLL
+@using CRYPTO_Burcea.DAL
+
+@{
+    BLLUtilizator oBLL = new BLLUtilizator();
+    CRYPTOEntities bd = new CRYPTOEntities();
+    int id = (int)ViewBag.id;
+    decimal curs = 0;
+    string refer = "";
+    if (bd.Curs.Where(c => c.IdMoneda == id).Count() >= 1)
+    {
+        curs = Convert.ToDecimal(bd.Curs.Where(c => c.IdMoneda == id).OrderByDescending(c => c.DataCurs).ThenByDescending(c => c.OraCurs).Select(c => c.Curs).FirstOrDefault());
+        refer = bd.Monedas.Where(m => m.Id == id).Select(m => m.Referinta).FirstOrDefault();
+    }
+    decimal disp = (decimal)ViewBag.Disponibil;
+    string dispS = disp.ToString();
+
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
+
+@if (oBLL.EsteAdmin(User.Identity.GetUserName()))
+{
+    @Ajax.ActionLink("Refresh", "IndexDisponibil", "Moneda", new { idMoneda = ViewBag.id }, new AjaxOptions()
+    {
+        HttpMethod = "GET",
+        UpdateTargetId = "divDisponibil",
+        InsertionMode = InsertionMode.Replace
+    }, new { @class = "btn btn-primary" })
+
+
+
+    <table class="table">
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Disponibil1)*@
+                Sold inițial
+            </th>
+            <th>
+                Sold Curent
+            </th>
+            <th>
+                Echivalent @refer
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataModificare)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OraModificare)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Moneda.DenumireMoneda)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            decimal echivalent = 0;
+            string echivalentString = "";
+            if (bd.Curs.Where(c => c.IdMoneda == id).Count() >= 1)
+            {
+                if (!item.Moneda.DenumireMoneda.Equals("Euro"))
+                {
+                    echivalent = Math.Round(disp * curs, 2);
+                    echivalentString = echivalent.ToString();
+                }
+                else
+                {
+                    echivalentString = "-";
+                }
+            }
+            else
+            {
+                echivalentString = "-";
+            }
+
+
+
+    <tr>
+        <td style="color:blue">
+            @Html.DisplayFor(modelItem => item.Disponibil1)
+        </td>
+        <td style="color:blue">
+            @dispS
+        </td>
+        <td style="color:blue">
+            @echivalentString
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DataModificare)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OraModificare)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Moneda.DenumireMoneda)
+        </td>
+        <td>
+            @Html.ActionLink("Modifică", "EditeazaDisponibil", "Moneda", new { idDisponibil = item.Id }, new { @class = "btn btn-warning" })
+        </td>
+    </tr>
+        }
+
+    </table>
+}
+
+

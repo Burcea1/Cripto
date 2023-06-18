@@ -1,0 +1,64 @@
+﻿@model CRYPTO_Burcea.DAL.TransferICP
+
+@{
+    ViewBag.Title = "Transfer nou";
+}
+
+<h2>Transfer nou @ViewBag.Moneda</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.DataTransfer, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DataTransfer, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.DataTransfer, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IdTransferatDin, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.IdTransferatDin, new SelectList(Model.ColectieContinutPortofeleDin, "Id", "Portofel.DenumirePortofel"), "Selectati portofelul ", htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.IdTransferatDin, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IdTransferatIn, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.IdTransferatIn, new SelectList(Model.ColectieContinutPortofeleIn, "Id", "Portofel.DenumirePortofel"), "Selectati portofelul ", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IdTransferatIn, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SumaTransferata, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SumaTransferata, new { htmlAttributes = new { @class = "form-control", @placeholder = "Suma transferata" } })
+                @Html.ValidationMessageFor(model => model.SumaTransferata, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Transferă" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Înapoi", "Detalii", "Portofel", new { idPortofel = ViewBag.idP }, new { @class = "btn btn-primary" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

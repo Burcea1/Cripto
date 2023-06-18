@@ -1,0 +1,68 @@
+﻿@model CRYPTO_Burcea.DAL.ContinutPortofel
+
+@{
+    ViewBag.Title = "Adaugare moneda la portofel";
+}
+
+
+<h2>Adăugare monedă la portofel</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.DataDeschidere)
+        @Html.HiddenFor(model => model.SumaDetinuta)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IdPortofel, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.IdPortofel, new SelectList(Model.ColectiePortofele, "Id", "DenumirePortofel"), "Selectati portofelul", htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.IdPortofel, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IdMoneda, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.IdMoneda, new SelectList(Model.ColectieMonede, "Id", "DenumireMoneda"), "Selectati moneda", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.IdMoneda, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.DataDeschidere, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DataDeschidere, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.DataDeschidere, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SumaDetinuta, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SumaDetinuta, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SumaDetinuta, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Adaugă" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Înapoi", "Detalii", "Portofel", new { idPortofel = Model.IdPortofel }, new { @class = "btn btn-primary" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

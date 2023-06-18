@@ -1,0 +1,150 @@
+﻿@model CRYPTO_Burcea.DAL.Disponibil
+@using Microsoft.AspNet.Identity
+@using CRYPTO_Burcea.BLL
+
+@{
+    ViewBag.Title = "Modificare disponibil";
+    BLLUtilizator oBLL = new BLLUtilizator();
+}
+
+<h2>Modificare disponibil: @ViewBag.Moneda</h2>
+
+@if (oBLL.EsteAdmin(User.Identity.GetUserName()))
+{
+
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+            @Html.Label("pluslabel", "Alimentare", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("plus", null, new { @class = "form-control", @placeholder = "Alimentare", @id = "txtA" })
+                <br />
+                <input type="button" id="btnA" class="btn btn-success" value="Alimentează" />
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+            @Html.Label("minuslabel", "Retragere", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("minus", null, new { @class = "form-control", @placeholder = "Retragere", @id = "txtR" })
+                <br />
+                <input type="button" id="btnR" class="btn btn-success" value="Retragere" />
+            </div>
+
+
+        </div>
+
+    </div>
+
+    using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.IdMoneda)
+            @Html.HiddenFor(model => model.DataModificare)
+            @Html.HiddenFor(model => model.OraModificare)
+
+            @*<div class="form-group">
+                    @Html.LabelFor(model => model.IdMoneda, "IdMoneda", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.IdMoneda, new SelectList(Model.ColectieMonede, "Id", "DenumireMoneda"), "Selectati moneda", htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.IdMoneda, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Disponibil1, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Disponibil1, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "txtD" } })
+                    @Html.ValidationMessageFor(model => model.Disponibil1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                    @Html.LabelFor(model => model.DataModificare, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.DataModificare, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DataModificare, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.OraModificare, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.OraModificare, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.OraModificare, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Salvează modificările" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    }
+}
+
+
+
+
+<div>
+    @Html.ActionLink("Înapoi", "Detalii", "Moneda", new { idMoneda = Model.IdMoneda }, new { @class = "btn btn-primary" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+@*  SCRIPT PENTRU MODIFICARE SUMA DISPONIBILA - ALIMENTARE *@
+<script type="text/javascript">
+    $(function ModificareDisponibilA() {
+        $("#btnA").on('click', function () {
+            if ($("#txtA").val() != "" && $("#txtD").val() != "") {
+                var d = $("#txtD").val();
+                var a = $("#txtA").val();
+                var total = parseFloat(d) + parseFloat(a);
+                $('#txtA').val("");
+                $('#txtD').val("");
+                $('#txtD').val(total);
+            }
+        });
+    })
+</script>
+
+@*  SCRIPT PENTRU MODIFICARE SUMA DISPONIBILA - RETRAGERE  *@
+<script type="text/javascript">
+    $(function ModificareDisponibilA() {
+        $("#btnR").on('click', function () {
+            if ($("#txtR").val() != "" && $("#txtD").val() != "") {
+                var d = $("#txtD").val();
+                var r = $("#txtR").val();
+                var total = parseFloat(d) - parseFloat(r);
+                if (parseFloat(r) > parseFloat(d)) {
+                    $('#txtR').val("");
+                    alert("Sold insuficient pentru a face o retragere")
+                }
+                else {
+                    $('#txtR').val("");
+                    $('#txtD').val("");
+                    $('#txtD').val(total);
+                }
+
+            }
+        });
+    })
+</script>

@@ -1,0 +1,66 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<CRYPTO_Burcea.DAL.Portofel>
+@using CRYPTO_Burcea.BLL
+
+@{
+    ViewBag.Title = "Portofele";
+}
+
+<h2>Portofelele mele</h2>
+
+<div class="table-bordered">
+    <h4>&nbsp;Căutare</h4>
+    @using (Html.BeginForm("Index", "Portofel", FormMethod.Get))
+    {
+        <span>&nbsp;Denumire portofel: </span>@Html.TextBox("searchDenumire", null, new { @class = "form-control" })
+        <input type="submit" class="btn btn-primary" value="Caută" />
+    }
+    <br />
+</div>
+
+<br />
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().DenumirePortofel)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().DataCreare)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Utilizator.Nume)
+        </th>
+        <th>
+            @Html.ActionLink("Crează portofel nou", "Adauga", "Portofel", null, new { @class = "btn btn-success" })
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td style="color:blue">
+                @Html.DisplayFor(modelItem => item.DenumirePortofel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataCreare)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Utilizator.Nume)
+            </td>
+            <td>
+                @Html.ActionLink("Detalii", "Detalii", "Portofel", new { idPortofel = item.Id }, new { @class = "btn btn-warning" })
+                @Html.ActionLink("Editează", "Editeaza", "Portofel", new { idPortofel = item.Id }, new { @class = "btn btn-warning" })
+                @using (Html.BeginForm("Sterge", "Portofel", new { idPortofel = item.Id }))
+                {
+                    <input type="submit" class="btn btn-danger" value="Închide portofel" onclick="return confirm('Sunteți sigur că ștergeți portofelul ?');" />
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+Pagina @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) din @Model.PageCount
+@Html.PagedListPager(Model, pagina => Url.Action("Index", "Portofel", new { pagina, searchDenumire = Request.QueryString["searchDenumire"] }))

@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNet.Identity
+@using CRYPTO_Burcea.DAL
+@{ 
+    CRYPTOEntities bd = new CRYPTOEntities();
+}
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        string username = User.Identity.GetUserName();
+        Int64 idU = bd.Utilizators.Where(u => u.Username == username).Select(u => u.Id).FirstOrDefault();
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @Html.ActionLink("Salutare, " + User.Identity.GetUserName(), "Detalii", "Utilizator", routeValues: new { idUtilizator = idU }, htmlAttributes: new { title = "Contul meu" })
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Deconectare</a></li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Înregistrare", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Autentificare", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

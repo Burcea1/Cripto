@@ -1,0 +1,281 @@
+﻿@model CRYPTO_Burcea.DAL.Utilizator
+@using Microsoft.AspNet.Identity
+@using CRYPTO_Burcea.BLL
+
+@{
+    ViewBag.Title = "Editeaza utilizator";
+    BLLUtilizator oBLL = new BLLUtilizator();
+}
+
+<h2>Editare cont: @ViewBag.NumeUser</h2>
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    @*<h4>Datele mele</h4>*@
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @*@Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })*@
+            <span class="control-label col-md-1">@ViewBag.NumeUser</span>
+            <input type="hidden" name="Username" value="@Model.Username" />
+            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <input type="hidden" name="Parola" value="@Model.Parola" />
+
+
+
+    @*
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Parola, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Parola, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Parola, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+    *@
+
+    @if (oBLL.EsteAdmin(User.Identity.GetUserName()) && Model.Username != User.Identity.GetUserName())
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.CalitateAdmin, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.CalitateAdmin)
+                    @Html.ValidationMessageFor(model => model.CalitateAdmin, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Blocat, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.Blocat)
+                    @Html.ValidationMessageFor(model => model.Blocat, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Nume, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.Nume, new { htmlAttributes = new { @class = "form-control" } })*@
+                <span class="control-label col-md-1">@ViewBag.Nume</span>
+                <input type="hidden" name="Nume" value="@Model.Nume" />
+                @Html.ValidationMessageFor(model => model.Nume, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CNP, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.CNP, new { htmlAttributes = new { @class = "form-control" } })*@
+                <span class="control-label col-md-1">@ViewBag.CNP</span>
+                <input type="hidden" name="CNP" value="@Model.CNP" />
+                @Html.ValidationMessageFor(model => model.CNP, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Adresa, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.Adresa, new { htmlAttributes = new { @class = "form-control" } })*@
+                <span class="control-label col-md-1">@ViewBag.Adresa</span>
+                <input type="hidden" name="Adresa" value="@Model.Adresa" />
+                @Html.ValidationMessageFor(model => model.Adresa, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Telefon, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.Telefon, new { htmlAttributes = new { @class = "form-control" } })*@
+                <span class="control-label col-md-1">@ViewBag.Telefon</span>
+                <input type="hidden" name="Telefon" value="@Model.Telefon" />
+                @Html.ValidationMessageFor(model => model.Telefon, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })*@
+                <span class="control-label col-md-1">@ViewBag.Email</span>
+                <input type="hidden" name="Email" value="@Model.Email" />
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    }
+    else if (oBLL.EsteAdmin(User.Identity.GetUserName()) && Model.Username == User.Identity.GetUserName())
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.CalitateAdmin, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.CalitateAdmin)
+                    @Html.ValidationMessageFor(model => model.CalitateAdmin, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Blocat, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.Blocat)
+                    @Html.ValidationMessageFor(model => model.Blocat, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Nume, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Nume, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nume si prenume" } })
+                @Html.ValidationMessageFor(model => model.Nume, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CNP, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CNP, new { htmlAttributes = new { @class = "form-control", @placeholder = "CNP" } })
+                @Html.ValidationMessageFor(model => model.CNP, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Adresa, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Adresa, new { htmlAttributes = new { @class = "form-control", @placeholder = "Adresa" } })
+                @Html.ValidationMessageFor(model => model.Adresa, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Telefon, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Telefon, new { htmlAttributes = new { @class = "form-control", @placeholder = "Telefon" } })
+                @Html.ValidationMessageFor(model => model.Telefon, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    }
+    else if (!oBLL.EsteAdmin(User.Identity.GetUserName()))
+    {
+        <input type="hidden" name="CalitateAdmin" value="@Model.CalitateAdmin" />
+        <input type="hidden" name="Blocat" value="@Model.Blocat" />
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Nume, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Nume, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nume si prenume" } })
+                @Html.ValidationMessageFor(model => model.Nume, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CNP, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CNP, new { htmlAttributes = new { @class = "form-control", @placeholder = "CNP" } })
+                @Html.ValidationMessageFor(model => model.CNP, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Adresa, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Adresa, new { htmlAttributes = new { @class = "form-control", @placeholder = "Adresa" } })
+                @Html.ValidationMessageFor(model => model.Adresa, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Telefon, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Telefon, new { htmlAttributes = new { @class = "form-control", @placeholder = "Telefon" } })
+                @Html.ValidationMessageFor(model => model.Telefon, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    }
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DataCreare, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DataCreare, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.DataCreare, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.DataCreare, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DataCreare, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DataCreare, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+    
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Salvează modificările" class="btn btn-success" />
+        </div>
+    </div>
+</div>
+}
+
+
+<div>
+    @if (oBLL.EsteAdmin(User.Identity.GetUserName()))
+    {
+        @Html.ActionLink("Înapoi", "Index", "Utilizator", new { @class = "btn btn-primary" })
+    }
+    else
+    {
+        @Html.ActionLink("Înapoi", "Detalii", "Utilizator", new { idUtilizator = Model.Id }, new { @class = "btn btn-primary" })
+    }
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

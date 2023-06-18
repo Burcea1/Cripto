@@ -1,0 +1,111 @@
+﻿@model CRYPTO_Burcea.DAL.Utilizator
+@using Microsoft.AspNet.Identity
+@using CRYPTO_Burcea.BLL
+
+@{
+    ViewBag.Title = "Contul meu";
+    BLLUtilizator oBLL = new BLLUtilizator();
+}
+
+<h2>Contul meu</h2>
+
+<div>
+    @*<h4>Datele mele</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Username)
+        </dd>
+        @*
+        <dt>
+            @Html.DisplayNameFor(model => model.Parola)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Parola)
+        </dd>
+        *@
+        <dt>
+            @Html.DisplayNameFor(model => model.Nume)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nume)
+        </dd>
+
+        @if (!oBLL.EsteAdmin(User.Identity.GetUserName()))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.CNP)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CNP)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Adresa)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Adresa)
+            </dd>
+        }
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Telefon)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telefon)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        @*
+        <dt>
+            @Html.DisplayNameFor(model => model.CalitateAdmin)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalitateAdmin)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Blocat)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Blocat)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DataCreare)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DataCreare)
+        </dd>
+        *@
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editează", "Editeaza", "Utilizator", new { idUtilizator = Model.Id }, new { @class = "btn btn-warning" })
+    @Html.ActionLink("Schimbă parola", "ChangePassword", "Manage", new { numeuser = Model.Username }, new { @class = "btn btn-warning" })
+    @using (Html.BeginForm("Sterge", "Utilizator", new { idUtilizator = Model.Id }))
+    {
+        <input type="submit" class="btn btn-danger" value="Șterge" onclick="return confirm('Sunteți sigur că ștergeți utilizatorul ?');" />
+    }
+    <hr />
+    @Html.ActionLink("Acasă", "Index", "Home", null, new { @class = "btn btn-primary" })
+</p>

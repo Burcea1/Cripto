@@ -1,0 +1,59 @@
+﻿@model CRYPTO_Burcea.DAL.Portofel
+
+@{
+    ViewBag.Title = "Editare portofel";
+}
+
+<h2>Editare portofel @ViewBag.Portofel</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>Portofel</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.IdUtilizator)
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DenumirePortofel, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DenumirePortofel, new { htmlAttributes = new { @class = "form-control", @placeholder = "Denumirea portofelului" } })
+            @Html.ValidationMessageFor(model => model.DenumirePortofel, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DataCreare, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DataCreare, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly"} })
+            @Html.ValidationMessageFor(model => model.DataCreare, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @*<div class="form-group">
+        @Html.LabelFor(model => model.IdUtilizator, "IdUtilizator", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.IdUtilizator, new SelectList(Model.ColectieUtilizatori, "Id", "Nume"), "Selectati utilizatorul", htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+            @Html.ValidationMessageFor(model => model.IdUtilizator, "", new { @class = "text-danger" })
+        </div>
+    </div>*@
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Salvează modificările" class="btn btn-success" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Înapoi", "Index", "Portofel", null, new { @class = "btn btn-primary" })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

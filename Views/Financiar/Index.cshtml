@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Date financiare";
+}
+
+<h2>Date financiare</h2>
+
+<script src="~/Scripts/jquery-3.4.1.min.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
+
+@using (Ajax.BeginForm("Detalii", "Financiar", new AjaxOptions()
+{
+    HttpMethod = "GET",
+    UpdateTargetId = "divDetaliiF",
+    InsertionMode = InsertionMode.Replace
+}))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Alege o monedă pentru a afla informații precum totalul vânzărilor și cumpărărilor de monedă, precum și comisioanele percepute</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.Label("Moneda", "Moneda", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("idMoneda", new SelectList(ViewBag.ListaMonede, "Value", "Text"), "Selectati moneda", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessage("idMoneda", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Vezi rezultatele" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+<hr />
+<div id="divDetaliiF">
+
+</div>

@@ -1,0 +1,48 @@
+﻿@model CRYPTO_Burcea.DAL.Portofel
+
+@{
+    ViewBag.Title = "Detalii portofel";
+}
+
+<h2>Detalii portofel: @ViewBag.Portofel</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DenumirePortofel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DenumirePortofel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DataCreare)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DataCreare)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Utilizator.Nume)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Utilizator.Nume)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editează", "Editeaza", "Portofel", new { idPortofel = Model.Id }, new { @class = "btn btn-warning" })
+    @Html.ActionLink("Înapoi", "Index", "Portofel", null, new { @class = "btn btn-primary" })
+</p>
+
+<hr />
+<div id="divContinutPortofel">
+    @{
+        Html.RenderAction("IndexContinutPortofel", "Portofel");
+    }
+</div>
